@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page Interativa</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000; /* Fundo preto */
+            font-family: Arial, sans-serif;
+            overflow: hidden; /* Para impedir rolagem quando os corações aparecerem */
+        }
+
+        #clickBox {
+            width: 150px;
+            height: 150px;
+            background-color: #ff0000; /* Caixa vermelha */
+            color: #ffffff; /* Texto branco */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 10px;
+            position: absolute;
+            transition: all 0.3s ease;
+            z-index: 1;
+            text-align: center;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            transform: rotate(45deg);
+            animation: fly 1s ease forwards;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -10px;
+            left: 0;
+        }
+
+        .heart::after {
+            left: -10px;
+            top: 0;
+        }
+
+        @keyframes fly {
+            0% {
+                transform: scale(0.5) translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.5) translateY(-300px);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="clickBox">clique 3 vezes</div>
+
+    <script>
+        const clickBox = document.getElementById('clickBox');
+        let clickCount = 0;
+
+        clickBox.addEventListener('click', () => {
+            clickCount++;
+
+            if (clickCount === 3) {
+                clickBox.textContent = "Te amo, não quero ficar longe de vc!!";
+                clickBox.style.backgroundColor = "#ffffff"; /* Caixa branca */
+                clickBox.style.color = "#ff0000"; /* Texto vermelho */
+                generateHearts();
+            } else {
+                clickBox.textContent = `clique ${3 - clickCount} vezes`;
+
+                const maxX = window.innerWidth - clickBox.clientWidth;
+                const maxY = window.innerHeight - clickBox.clientHeight;
+
+                const randomX = Math.floor(Math.random() * maxX);
+                const randomY = Math.floor(Math.random() * maxY);
+
+                clickBox.style.left = `${randomX}px`;
+                clickBox.style.top = `${randomY}px`;
+            }
+        });
+
+        function generateHearts() {
+            for (let i = 0; i < 30; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                document.body.appendChild(heart);
+
+                heart.style.left = `${Math.random() * window.innerWidth}px`;
+                heart.style.top = `${Math.random() * window.innerHeight}px`;
+
+                heart.addEventListener('animationend', () => {
+                    heart.remove();
+                });
+            }
+        }
+    </script>
+</body>
+</html>
